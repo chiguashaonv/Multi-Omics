@@ -36,9 +36,13 @@ fastp -i xxx.1.fastq.gz -o xxx.1.out.fastq.gz -I xxx.2.fastq.gz -O xxx.2.out.fas
 >Please note that TopHat has entered a low maintenance, low support stage as it is now largely superseded by HISAT2 which provides the same core functionality (i.e. spliced alignment of RNA-Seq reads), in a more accurate and much more efficient way.
 
 因此，我们下面只尝试STAR和HISAT2这两种方法
+
 **STAR**
+
 [使用手册](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf)
+
 [生信菜鸟团的使用说明](http://www.bio-info-trainee.com/727.html)
+
 1. 生成genome Index
 *--runThreadN* 线程数
 
