@@ -43,47 +43,11 @@ fastp -i xxx.1.fastq.gz -o xxx.1.out.fastq.gz -I xxx.2.fastq.gz -O xxx.2.out.fas
 
 [生信菜鸟团的使用说明](http://www.bio-info-trainee.com/727.html)
 
+[参考阅读１](https://www.jianshu.com/p/eca16bf2824e)
+[参考阅读２](http://www.bioinfo-scrounger.com/archives/288)
+[参考阅读３](http://starsyi.github.io/2016/05/24/SAM%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E8%AF%B4%E6%98%8E/)
+
 1. 生成genome Index
-*--runThreadN* 线程数
-
-*--runMode* 运行模式：genomeGenerate
-
-*--genomeDir* /path/to/genomeDir
-
-*--genomeFastaFiles* /path/to/genome/fasta1 /path/to/genome/fasta2 ...
-
---sjdbGTFfile /path/to/annotations.gtf
-
-*--sjdbOverhang* ReadLength-1
-
-*--runThreadN* option defines the number of threads to be used for genome generation, it has to be set to the number of available cores on the server node.
-
-*--runMode* genomeGenerate option directs STAR to run genome indices generation job.
-
-*--genomeDir* specifies path to the directory (henceforth called ”genome directory” where the
-genome indices are stored. This directory has to be created (with mkdir) before STAR run
-and needs to writing permissions. The filesystem needs to have at least 100GB of disk space
-available for a typical mammalian genome. It is recommended to remove all files from the
-genome directory before running the genome generation step. This directory path will have to
-be supplied at the mapping step to identify the reference genome.
-
-*--genomeFastaFiles* specified one or more FASTA files with the genome reference sequences.
-Multiple reference sequences (henceforth called chromosomes) are allowed for each fasta file.
-You can rename the chromosomes names in the chrName.txt keeping the order of the chromosomes
-in the file: the names from this file will be used in all output alignment files (such as
-.sam). The tabs are not allowed in chromosomes names, and spaces are not recommended.
-
-*--sjdbGTFfile* specifies the path to the file with annotated transcripts in the standard GTF
-format. STAR will extract splice junctions from this file and use them to greatly improve
-accuracy of the mapping. While this is optional, and STAR can be run without annotations,
-using annotations is highly recommended whenever they are available.
-
-*--sjdbOverhang* specifies the length of the genomic sequence around the annotated junction
-to be used in constructing the splice junctions database. Ideally, this length should be equal
-to the ReadLength-1, where ReadLength is the length of the reads. For instance, for Illumina
-2x100b paired-end reads, the ideal value is 100-1=99. In case of reads of varying length, the
-ideal value is max(ReadLength)-1. In most cases, a generic value of 100 will work as
-well as the ideal value.
 
 ```powershell
 STAR \
@@ -96,26 +60,14 @@ STAR \
 ```
 
 2. 进行序列比对
-*--runThreadN* NumberOfThreads
-
-*--genomeDir* /path/to/genomeDir
-
-*--readFilesIn* /path/to/read1 [/path/to/read2 ]
-
-*--runThreadN* option defines the number of threads to be used for genome generation, it has
-to be set to the number of available cores on the server node.
-
-*--genomeDir* specifies path to the genome directory where genome indices where generated.
-
-*--readFilesIn* name(s) (with path) of the files containing the sequences to be mapped (e.g. RNA-seq FASTQ files). If using Illumina paired-end reads, the read1 and read2 files have to be supplied. STAR can process both FASTA and FASTQ files. Multi-line (i.e. sequence split in multiple lines) FASTA file are supported. If the read files are compressed, use the
-
-*--readFilesCommand* UncompressionCommand option, where UncompressionCommand is the un-compression command that takes the file name as input parameter, and sends the uncompressed output to stdout. For example, for gzipped files (*.gz) use --readFilesCommand zcat OR --readFilesCommand gzip -c. For bzip2-compressed files, use --readFilesCommand bzip2 -c.
 
 ```powershell
 STAR \
 --runThreadN 30 \
 --genomeDir genomeDir \
+--readFilesCommand zcat \
 --readFilesIn fastq1 fastq2 \
+--outSAMtype BAM SortedByCoordinate \
 --outFileNamePrefix ${mapping_dir}/${sample_id}. 
 ```
 
