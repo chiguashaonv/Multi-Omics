@@ -110,6 +110,35 @@ STAR \
 --sjdbFileChrStartEnd all.SJ.out.tab.list \ #相比与第一次建立索引，只增加了一个命令选项，就是把SJ.out.tab文件加入到建立索引中
 ```
 
+3.2 重新比对
+
+```powershell
+STAR \
+ --runThreadN 10 \
+ --genomeDir ~/project/technique/RNAseq.data/genomeDir/genomeDir \
+ --readFilesCommand zcat \
+ --readFilesIn ~/project/technique/RNAseq.data/SRR771548.sra_1_clean.fastq.gz ~/project/technique/RNAseq.data/SRR771548.sra_2_clean.fastq.gz \
+ --outSAMtype BAM SortedByCoordinate \
+ --outFileNamePrefix ~/project/technique/RNAseq.data/two.pass.mapping/
+ ```
+ 
+ 4. 计算counts
+ 
+ 4.1 featureCounts
+ ```powershell
+featureCounts -T 10 -p -t exon -g gene_id \
+	-a /home/liuke/reference/homo_annotation_hg19/gencode.v19.annotation.gtf \
+	-o ~/project/technique/featurecounts/featureCounts.txt ~/project/technique/RNAseq.data/two.pass.mapping/Aligned.sortedByCoord.out.bam
+
+```
+ 输出文件：gene_assigned　计数结果
+ 
+ ```powershell
+cut -f 1,7 gene_assigned | grep -v '^#' > feature.counts.txt
+ ```
+ 
+4.2 
+ 
 
 
 
