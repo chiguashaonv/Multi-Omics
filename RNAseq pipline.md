@@ -71,6 +71,23 @@ STAR \
 --outFileNamePrefix ${mapping_dir}/${sample_id}. 
 ```
 
+3. STAR软件可以进行二次比对
+
+＞为了发现更加灵敏的new junction，STAR建议使用2-pass mode，其能增加检测到的new junction数目，使得更多的splices reads能mapping到new junction。因此STAR先用一般参数做一遍mapping，收集检测到的junction信息，然后利用这已经annotated junction来做第二次mapping．
+
+3.1 重新建立索引
+
+```powershell
+STAR \
+--runThreadN 10 \
+--runMode genomeDir \
+--genomeDir new.path.to.genomeDir \
+--genomeFastaFiles /home/liuke/reference/hg19.fa \
+--sjdbGTFfile /home/liuke/reference/hg19.gtf \
+--sjdbOverhang 99 \
+--sjdbFileChrStartEnd all.SJ.out.tab.list \ #相比与第一次建立索引，只增加了一个命令选项，就是把SJ.out.tab文件加入到建立索引中
+```
+
 
 
 
