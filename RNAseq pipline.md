@@ -70,10 +70,32 @@ STAR \
 --outSAMtype BAM SortedByCoordinate \
 --outFileNamePrefix ${mapping_dir}/${sample_id}. 
 ```
+输出的文件：![图片](http://imglf5.nosdn0.126.net/img/SWliemNmRGVaVmtnZE1GNnkzREpEV2tmWmkxS0NuZkFvcDVUT2pxMEROamEwNWMwdVNSL0hBPT0.png?imageView&thumbnail=1680x0&quality=96&stripmeta=0)
+Aligned.sortedByCoord.out.bam: 比对结果
+SJ.out.tab：包含剪接信息
+
+>column 1: chromosome
+
+>column 2: first base of the intron (1-based)
+
+>column 3: last base of the intron (1-based)
+
+>column 4: strand (0: undefined, 1: +, 2: -)
+
+>column 5: intron motif: 0: non-canonical; 1: GT/AG, 2: CT/AC, 3: GC/AG, 4: CT/GC, 5:AT/AC, 6: GT/AT
+
+>column 6: 0: unannotated, 1: annotated (only if splice junctions database is used)
+
+>column 7: number of uniquely mapping reads crossing the junction
+
+>column 8: number of multi-mapping reads crossing the junction
+
+>column 9: maximum spliced alignment overhang
+
 
 3. STAR软件可以进行二次比对
 
-＞为了发现更加灵敏的new junction，STAR建议使用2-pass mode，其能增加检测到的new junction数目，使得更多的splices reads能mapping到new junction。因此STAR先用一般参数做一遍mapping，收集检测到的junction信息，然后利用这已经annotated junction来做第二次mapping．
+>为了发现更加灵敏的new junction，STAR建议使用2-pass mode，其能增加检测到的new junction数目，使得更多的splices reads能mapping到new junction。因此STAR先用一般参数做一遍mapping，收集检测到的junction信息，然后利用这已经annotated junction来做第二次mapping．
 
 3.1 重新建立索引
 
