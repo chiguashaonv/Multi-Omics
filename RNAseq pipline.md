@@ -146,10 +146,22 @@ cut -f 1,7 gene_assigned | grep -v '^#' > feature.counts.txt
 
 [参考阅读](https://www.jianshu.com/p/681e02e7f9af)
 
+1. 下载index
 
+下载完成后解压并且运行文件夹中的shell脚本，这步运行了好久,生成了下列的文件：
+genome.1.ht2　genome.2.ht2　genome.3.ht2　genome.4.ht2　genome.5.ht2　genome.6.ht2　genome.7.ht2　genome.8.ht2　make_hg19.sh
 
+２．比对
+
+最基础的命令
+```
+hisat2 -x ~/reference/hisat2-hg19/genome -1 ~/project/technique/RNAseq.data/SRR771548.sra_1_clean.fastq.gz \
+	-2 ~/project/technique/RNAseq.data/SRR771548.sra_2_clean.fastq.gz \
+	-S ~/project/technique/RNAseq.data/hisat2.mapping/SRR771548.sam
+```
+最需要注意的一点是在用`-x`指定index时，不能只指定目录，比如上述index的目录是`~/reference/hisat2-hg19/`,但是如果我只输入这个目录，就会显示`Could not locate a HISAT2 index corresponding to basename "/home/liuke/reference/hisat2-hg19/"`，我们还要输入这个目录中，每个文件相同的开头，比如这个index中，就需要输入`~/reference/hisat2-hg19/genome`
  
-
+输出的文件就是上述的SRR771548.sam文件
 
 
 
