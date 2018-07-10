@@ -1,4 +1,5 @@
 # RNAseq pepline
+必读文献：[Gaining comprehensive biological insight into the transcriptome by performing a broad-spectrum RNA-seq analysis](https://www.nature.com/articles/s41467-017-00050-4)
 
 ## 数据下载与处理
 ### 将数据从sra格式转化为fastq.gz格式
@@ -137,7 +138,16 @@ featureCounts -T 10 -p -t exon -g gene_id \
 cut -f 1,7 gene_assigned | grep -v '^#' > feature.counts.txt
  ```
  
-4.2 
+**HISAT2**
+这个软件我们的服务器竟然没装，好在装起来简单，官网下载source code，解压后`make`，然后把路径添加到.bashrc里面去：
+`export PATH=$PATH:/home/liuke/software/hisat2-2.1.0`，在服务器上，则是添加到了.bash_profile中：`PATH=$PATH:$HOME/software/hisat2-2.1.0`
+
+[官网](https://ccb.jhu.edu/software/hisat2/manual.shtml#building-from-source)
+
+[参考阅读](https://www.jianshu.com/p/681e02e7f9af)
+
+
+
  
 
 
