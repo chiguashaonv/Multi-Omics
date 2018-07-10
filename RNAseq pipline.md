@@ -163,6 +163,21 @@ hisat2 -x ~/reference/hisat2-hg19/genome -1 ~/project/technique/RNAseq.data/SRR7
  
 输出的文件就是上述的SRR771548.sam文件
 
+62789772 reads; of these:
+  62789772 (100.00%) were paired; of these:
+    2946595 (4.69%) aligned concordantly 0 times
+    56129524 (89.39%) aligned concordantly exactly 1 time
+    3713653 (5.91%) aligned concordantly >1 times
+    ----
+    2946595 pairs aligned concordantly 0 times; of these:
+      124043 (4.21%) aligned discordantly 1 time
+    ----
+    2822552 pairs aligned 0 times concordantly or discordantly; of these:
+      5645104 mates make up the pairs; of these:
+        3552647 (62.93%) aligned 0 times
+        1911761 (33.87%) aligned exactly 1 time
+        180696 (3.20%) aligned >1 times
+97.17% overall alignment rate
 
 
 
