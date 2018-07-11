@@ -163,6 +163,7 @@ hisat2 -x ~/reference/hisat2-hg19/genome -1 ~/project/technique/RNAseq.data/SRR7
  
 输出的文件就是上述的SRR771548.sam文件
 
+输出的信息如下所示
 62789772 reads; of these:
   62789772 (100.00%) were paired; of these:
     2946595 (4.69%) aligned concordantly 0 times
@@ -179,6 +180,25 @@ hisat2 -x ~/reference/hisat2-hg19/genome -1 ~/project/technique/RNAseq.data/SRR7
         180696 (3.20%) aligned >1 times
 97.17% overall alignment rate
 
+
+3. 排序
+
+按照名字进行排序
+```
+samtools sort -n file.sam -o file.sortbyname.sam
+```
+
+４. 计算counts
+
+用htseq-count计算counts，刚开始直接用下面的代码写：
+```
+htseq-count sam.file gtf > counts.txt
+```
+但是，我们用的sam文件要排序，我们上面按照名字排序，所以下面的选项`r`中，我们就写name．但是这个代码默认是比对exon，而且默认的feature是gene_id，而且由于用的gtf里面的染色体的写法是站＇１＇，而不是只＇chr1＇，导致一个都没有比对上，在西仔细的研究了htseq-count的命令选项后，重新写了代码：
+```
+htseq-count -s no -t gene -i gene_name -r name sam.file gtf > gene.counts.txt
+```
+而且，在发现了这个问题之后，又重新回去仔细看了featureCounts的命令选项，发现`t`表示同样的作用，而`g`则与htseq-count里的`i`作用相同．
 
 
 
