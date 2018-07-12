@@ -139,6 +139,7 @@ cut -f 1,7 gene_assigned | grep -v '^#' > feature.counts.txt
  ```
  
 **HISAT2**
+
 这个软件我们的服务器竟然没装，好在装起来简单，官网下载source code，解压后`make`，然后把路径添加到.bashrc里面去：
 `export PATH=$PATH:/home/liuke/software/hisat2-2.1.0`，在服务器上，则是添加到了.bash_profile中：`PATH=$PATH:$HOME/software/hisat2-2.1.0`
 
