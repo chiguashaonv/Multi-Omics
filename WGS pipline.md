@@ -26,3 +26,16 @@ md5文件是用来检验在文件传输过程中有没有发生数据的遗失�
 在我们下载的数据中包括了６个lane，在处理过程中，我们一般是在对比后对bam文件进行合并
 
 ## 2. 质控
+
+[数据质控](https://mp.weixin.qq.com/s?__biz=MzAxOTUxOTM0Nw==&mid=2649798281&idx=1&sn=c3448e0e656a38808d0000ac8337e25d&scene=19#wechat_redirect)
+
+```
+ls *.gz | while read id; do
+	fastqc -t 10 -o ~/project/technique/fastqc --noextract $id
+done
+```
+multiqc
+```
+
+```
+
