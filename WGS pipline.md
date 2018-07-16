@@ -34,8 +34,34 @@ ls *.gz | while read id; do
 	fastqc -t 10 -o ~/project/technique/fastqc --noextract $id
 done
 ```
-multiqc
+**multiqc**
+```powershell
+multiqc ./fastqc/
 ```
+速度非常快,这个数据的[结果](https://github.com/chiguashaonv/Multi-Omics/blob/master/WGS/multiqc_report.html)也非常好．
+
+## 3. 比对
+
+**bwa**
+
+[bwa参考１](http://starsyi.github.io/2016/05/24/BWA-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/) 
+[bwa参考２](https://blog.csdn.net/oxygenjing/article/details/77747750)
+
+## 3.1　建立索引
+```powershell
+bwa index [-p prefix] [-a algoType] <in.db.fasta>
+```
+在我们的服务器上已经建立了bwa的索引文件，因此这一步就可以省略
+
+## 3.2 基因组比对
+```powershell
+#用法：mem Usage: bwa mem [options] ref.fa reads.fq [mates.fq]
+for i in $(seq 1 6);do
+	bwa mem -t 10 -M ~/reference/Genome/BWAIndex/hg19.fa　＼
+		~/project/technique/Sequence/KPGP-00001_L${i}_R1.fq.gz ＼
+		~/project/technique/Sequence/KPGP-00001_L${i}_R2.fq.gz > ~/project/technique/bwa.mapping/KPGP-00001_L${i}.sam 2> ./mem-pe.log
+done
 
 ```
+
 
