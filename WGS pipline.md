@@ -29,7 +29,7 @@ md5文件是用来检验在文件传输过程中有没有发生数据的遗失�
 
 [数据质控](https://mp.weixin.qq.com/s?__biz=MzAxOTUxOTM0Nw==&mid=2649798281&idx=1&sn=c3448e0e656a38808d0000ac8337e25d&scene=19#wechat_redirect)
 
-```
+```powershell
 ls *.gz | while read id; do
 	fastqc -t 10 -o ~/project/technique/fastqc --noextract $id
 done
