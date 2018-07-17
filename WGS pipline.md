@@ -47,21 +47,58 @@ multiqc ./fastqc/
 [bwa参考１](http://starsyi.github.io/2016/05/24/BWA-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/) 
 [bwa参考２](https://blog.csdn.net/oxygenjing/article/details/77747750)
 
-## 3.1　建立索引
+### 3.1　建立索引
 ```powershell
 bwa index [-p prefix] [-a algoType] <in.db.fasta>
 ```
 在我们的服务器上已经建立了bwa的索引文件，因此这一步就可以省略
 
-## 3.2 基因组比对
+### 3.2 基因组比对
 ```powershell
 #用法：mem Usage: bwa mem [options] ref.fa reads.fq [mates.fq]
 for i in $(seq 1 6);do
-	bwa mem -t 10 -M ~/reference/Genome/BWAIndex/hg19.fa　＼
-		~/project/technique/Sequence/KPGP-00001_L${i}_R1.fq.gz ＼
-		~/project/technique/Sequence/KPGP-00001_L${i}_R2.fq.gz > ~/project/technique/bwa.mapping/KPGP-00001_L${i}.sam 2> ./mem-pe.log
+	bwa mem -t 10 -R "@RG\tID:L${i}\tPL:ILLUMINA\tSM:KPGP-00001" -M \
+	~/reference/Genome/BWAIndex/hg19.fa \
+	~/project/technique/sequence/KPGP-00001_L${i}_R1.fq.gz ~/project/technique/sequence/KPGP-00001_L${i}_R2.fq.gz > ~/project/technique/bwa.mapping/KPGP-00001_L${i}.sam 2> ./mem-pe.log
 done
 
 ```
+六个lane的数据，每个数据的每个reads大约是5-6G,比对之后生成的６个sam文件大约每个50G左右．生成的sam文件排序为按照原本的reads顺序进行排序．
+在阅读资料时，我发现在使用gatk call变异的时候，比对过程中设置的`-R`这个选项是必须的，所以必须在这步中进行设置，这个命令的解释可以参考这篇[文章](https://mp.weixin.qq.com/s?__biz=MzAxOTUxOTM0Nw==&mid=2649798296&idx=1&sn=790d0141eec792b25083c63e87fee14c&scene=19#wechat_redirect)，但是我发现这个问题的时候已经跑完比对过程了，如果重新再跑一次，时间太久，因此需要寻找为SAM/BAM添加Read Groups的[方法](https://www.jianshu.com/p/215b17c12174):
+```powershell
+TAG='@RG\tID:xzg\tSM:Ebola\tLB:patient_100'　＃一般来讲，ID指lane id，SM指样本id,LB指测序文库的名字，重要性不高
+# Add the tags during alignment 在比对是进行添加
+bwa mem -R $TAG $REF $R1 $R2 | samtools sort > bwa.bam
+samtools index bwa.bam
+# Add tags with samtools addreplacerg　在比对后进行添加
+samtools addreplacerg -r $TAG bwa_sorted.bam -o bwa_sorted_with_rg.bam
+ ```
+所以在我们下面转换为bam文件之后，添加rg信息进去
+
+
+
+### 3.3 sam文件转换
+
+为了节省储存空间，所以我们将比较大的sam文件转换为二进制的bam文件
+```powershell
+#bam to sam
+samtools view -h abc.bam > abc.sam
+#sam to bam
+samtools view -@ 10 -b -S abc.sam > abc.bam
+```
+```powershell
+for i in $(seq 1 6);do
+	samtools view -@ 10 -b -S KPGP-00001_L${i}.sam > KPGP-00001_L${i}.bam
+done
+```
+在转换为bam文件之后，每个文件的大小变为了15,16G，接下来，我们添加一下上面命令中漏掉的RG信息
+```powershell
+for i in $(seq 1 6):do
+	TAG='@RG\tID:L{i}\tSM:KPGP-00001'
+	samtools addreplacerg -r $TAG KPGP-00001_L{i}.bam -o KPGP-00001_L{i}.with_rg.bam
+done
+```
+
+
 
 
