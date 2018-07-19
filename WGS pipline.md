@@ -99,6 +99,19 @@ for i in $(seq 1 6):do
 done
 ```
 
+### 3.4 将bam文件按照位置进行排序
+```powershell
+for i in $(seq 1 6);do
+	samtools sort -@ 10 -O bam -o KPGP-00001_L${i}.sort.bam KPGP-00001_L${i}.bam
+done
+```
 
+## 4. 去除pcr重复
+
+## 5. 合并不同的lane
+
+## 5. 局部重比对
+
+## 6. 变异检测
 
 
