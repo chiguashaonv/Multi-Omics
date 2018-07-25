@@ -34,7 +34,7 @@ wget http://cf.10xgenomics.com/supp/cell-exp/refdata-cellranger-hg19-1.2.0.tar.g
 tar -xzvf refdata-cellranger-hg19-1.2.0.tar.gz
 ```
 
-测序数据采用了两种不同的建库方法，Single Cell 3' v1和Single Cell 3' v2，这两种方法测序的read1,read2的内容不同，具体可以参考[Sequencing Requirements for Single Cell 3'](https://support.10xgenomics.com/single-cell-gene-expression/index/doc/specifications-sequencing-requirements-for-single-cell-3)
+测序数据采用了两种不同的建库方法，Single Cell 3' v1和Single Cell 3' v2，这两种方法测序的read1,read2的内容不同，具体可以参考[Sequencing Requirements for Single Cell 3'](https://support.10xgenomics.com/single-cell-gene-expression/index/doc/specifications-sequencing-requirements-for-single-cell-3),除此之外，还可以在10x genomics的官网上了解关于[10x genomics测序](https://support.10xgenomics.com/single-cell-gene-expression/index)的具体细节．
 
 
 在阅读cellranger的使用说明时，我发现对于这个软件来说，输入的fastq文件名字要有特定的格式：`Sample1_S1_L001_I1_001.fastq.gz`，因此，我在使用这个软件的时候，就需要对我们的数据进行改名，才能继续使用，因为我们的数据是一个样本一个fastq(R1,R2,R3)文件，所以在改名之后，每个样本都需要运行一次`cellranger count`拿到每一个样本的表达矩阵，然后用`cellranger aggr`命令进行合并．下面，以`Sample1_S1_L001_R1_001.fastq.gz,Sample1_S1_L001_R2_001.fastq.gz,Sample1_S1_L001_I1_001.fastq.gz`这个名字为例，写出示例代码．
